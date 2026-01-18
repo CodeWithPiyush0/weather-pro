@@ -1,3 +1,4 @@
+import React, { useState } from 'react'
 import './App.css'
 import { useSelector, useDispatch } from 'react-redux'
 import SearchBar from './components/SearchBar'
@@ -7,6 +8,7 @@ import { X } from 'lucide-react'
 function App() {
 
   const { cities, unit } = useSelector((state) => state.weather);
+  const [selectedCity, setSelectedCity] = useState(null);
   const dispatch = useDispatch();
 
   return (
@@ -19,6 +21,7 @@ function App() {
         {cities.map((city) => (
           <div 
             key={city.id}
+            onClick={() => setSelectedCity(city)}
             className='bg-white p-6 rounded-xl shadow-md relative group'
           >
             <button
@@ -52,6 +55,25 @@ function App() {
           </div>
         ))}
       </div>
+
+      {selectedCity && (
+        <div className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50'>
+          <div className='bg-white rounded-2xl p-8 max-w-4xl w-full max-h-[90vh] overflow-y-auto relative'>
+            <button
+              onClick={() => setSelectedCity(null)}
+              className='absolute top-4 right-4 text-gray-500 hover:text-black'
+            >
+              <X size={24}/>
+            </button>
+
+            <h2 className='text-3xl font-bold mb-4'>{selectedCity.name} Analytics</h2>
+
+            <div className='bg-blue-50 p-6 rounded-xl border border-blue-100 mb-6'>
+              <p className='text-lg'>Detailed stats for {selectedCity.name} will go here.</p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
