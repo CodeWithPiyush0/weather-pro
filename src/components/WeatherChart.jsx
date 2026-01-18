@@ -8,10 +8,10 @@ const WeatherChart = ({ forecastData, unit }) => {
         temp: Math.round(item.main.temp),
     }))
   return (
-    <div className='h-64 w-full bg-white p-4 rounded-xl border border-gray-100 shadow-sm mt-4'>
-        <h3 className='text-sm font-medium text-gray-500 mb-4'>24-Hour Temperature Trend</h3>
+    <div className='h-64 w-full bg-white p-2 md:p-4 rounded-xl border border-gray-100 shadow-sm mt-4'>
+        <h3 className='text-xs md:text-sm font-medium text-gray-500 mb-4 px-2'>24-Hour Temperature Trend</h3>
         <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={chartData}>
+            <AreaChart data={chartData} margin={{ top:5, right: 20, left: -20, bottom: 25 }}>
                 <defs>
                     <linearGradient id='colorTemp' x1="0" y1="0" x2="0" y2="1">
                         <stop offset="5%" stopColor='#3b82f6' stopOpacity={0.3}/>
@@ -19,8 +19,8 @@ const WeatherChart = ({ forecastData, unit }) => {
                     </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke='#f0f0f0' />
-                <XAxis dataKey="time" tick={{fontSize: 12}} axisLine={false} tickLine={false} />
-                <YAxis unit='°' tick={{fontSize: 12}} axisLine={false} tickLine={false} />
+                <XAxis dataKey="time" tick={{fontSize: 10, fill: '#94a3b8'}} axisLine={false} interval={'1'} tickLine={false} tickMargin={15} />
+                <YAxis unit='°' tick={{fontSize: 10}} axisLine={false} tickLine={false} />
                 <Tooltip 
                     contentStyle={{ borderRadius: '10px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1' }}
                 />

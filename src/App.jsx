@@ -24,7 +24,7 @@ function App() {
           <div
             key={city.id}
             onClick={() => setSelectedCity(city)}
-            className="bg-white p-6 rounded-xl shadow-md relative group"
+            className="bg-white p-6 rounded-xl shadow-md relative group cursor-pointer hover:shadow-lg transition-shadow"
           >
             <button
               onClick={() => dispatch(removeCity(city.id))}
@@ -61,35 +61,35 @@ function App() {
       </div>
 
       {selectedCity && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-2xl p-8 max-w-4xl w-full max-h-[90vh] overflow-y-auto relative">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-2 md:p-4 z-50">
+          <div className="bg-white rounded-3xl p-4 md:p-10 max-w-4xl w-[98%] md:w-full max-h-[90vh] overflow-y-auto relative shadow-2xl custom-scrollbar">
             <button
               onClick={() => setSelectedCity(null)}
-              className="absolute top-4 right-4 text-gray-500 hover:text-black"
+              className="absolute top-4 right-4 text-gray-500 hover:text-black z-10 bg-white rounded-full p-1"
             >
               <X size={24} />
             </button>
 
-            <h2 className="text-3xl font-bold mb-4">
+            <h2 className="text-2xl md:text-3xl font-bold mb-4 pr-8">
               {selectedCity.name} Analytics
             </h2>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-              <div className="bg-gray-50 p-4 rounded-lg">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+              <div className="bg-gray-50 p-3 rounded-lg">
                 <p className="text-gray-500 text-xs uppercase">Pressure</p>
-                <p className="font-bold">{selectedCity.main.pressure} hPa</p>
+                <p className="font-bold text-sm md:text-base">{selectedCity.main.pressure} hPa</p>
               </div>
               <div className="bg-gray-50 p-4 rounded-lg">
                 <p className="text-gray-500 text-xs uppercase">Visisbility</p>
-                <p className="font-bold">{selectedCity.visibility / 1000} km</p>
+                <p className="font-bold text-sm md:text-base">{selectedCity.visibility / 1000} km</p>
               </div>
               <div className="bg-gray-50 p-4 rounded-lg">
                 <p className="text-gray-500 text-xs uppercase">Humidity</p>
-                <p className="font-bold">{selectedCity.main.humidity}%</p>
+                <p className="font-bold text-sm md:text-base">{selectedCity.main.humidity}%</p>
               </div>
               <div className="bg-gray-50 p-4 rounded-lg">
                 <p className="text-gray-500 text-xs uppercase">Wind Speed</p>
-                <p className="font-bold">{selectedCity.wind?.speed} m/s</p>
+                <p className="font-bold text-sm md:text-base">{selectedCity.wind?.speed} m/s</p>
               </div>
             </div>
 
@@ -97,26 +97,27 @@ function App() {
               <WeatherChart forecastData={selectedCity.forecast} unit={unit} />
             )}
 
-            <div className="mt-8">
-              <h3 className="text-lg font-semibold mg-4">5-Day Forecast</h3>
-              <div className="space-y-3">
+            <div className="mt-8 mb-4">
+              <h3 className="text-lg font-semibold mb-4">5-Day Forecast</h3>
+              <div className="space-y-2">
                 {selectedCity.forecast?.list?.filter((_, index) => index % 8 === 0).map((day) => (
-                  <div key={day.dt} className="flex items-center justify-between p-3 bg-blue-50/50 rounded-lg">
-                    <span className="font-medium">
+                  <div key={day.dt} className="flex items-center justify-between p-3 bg-blue-50/50 rounded-xl">
+                    <span className="font-medium text-sm md:text-base text-gray-700">
                       {new Date(day.dt * 1000).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })}
                     </span>
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-2 md:gap-4">
                       <img 
                         src={`https://openweathermap.org/img/wn/${day.weather[0].icon}.png`} 
                         alt="icon"
                         className="w-8 h-8" 
                       />
-                      <span className="font-bold text-lg">{Math.round(day.main.temp)}°C</span>
+                      <span className="font-bold text-base md:text-lg">{Math.round(day.main.temp)}°C</span>
                     </div>
                   </div>
                 ))}
               </div>
             </div>
+            <div className="h-4 w-full"></div>
           </div>
         </div>
       )}
