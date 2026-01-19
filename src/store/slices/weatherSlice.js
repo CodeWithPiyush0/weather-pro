@@ -30,6 +30,22 @@ export const fetchWeather = createAsyncThunk(
     }
 );
 
+const loadFavorites = () => {
+    try {
+        return JSON.parse(localStorage.getItem('favoriteCities')) || [];
+    } catch {
+        return [];
+    }
+};
+
+const saveFavorites = (cities) => {
+    const favoriteIds = cities
+        .filter(city => city.favorite)
+        .map(city => city.id);
+
+    localStorage.setItem('favoriteCities', JSON.stringify(favoriteIds))
+};
+
 const weatherSlice = createSlice({
     name: 'weather',
     initialState: {
@@ -37,6 +53,7 @@ const weatherSlice = createSlice({
         loading: false,
         error: null,
         unit: 'metric',
+        favoriteCitiIds: loadFavorites()
     },
     reducers: {
         removeCity: (state, action) => {
@@ -49,6 +66,7 @@ const weatherSlice = createSlice({
             const city = state.cities.find(c => c.id === action.payload);
             if (city) {
                 city.favorite = !city.favorite;
+                saveFavorites(state.cities);
             }
         },
         clearError: (state) => {
@@ -67,7 +85,10 @@ const weatherSlice = createSlice({
 
                 const exists = state.cities.find(c => c.id === action.payload.id);
 
-                const favoriteStatus = exists?.favorite || false;
+                const favoriteStatus = 
+                    state.favoriteCitiIds.includes(action.payload.id) || 
+                    exists?.favorite ||
+                    false;
 
                 if(!exists || Date.now() - exists.fetchedAt > 60000) {
                     state.cities = state.cities.filter(c => c.id !== action.payload.id);
@@ -75,6 +96,7 @@ const weatherSlice = createSlice({
                         ...action.payload,
                         favorite: favoriteStatus,
                     });
+                    saveFavorites(state.cities);
                 }
             })
             .addCase(fetchWeather.rejected, (state, action) => {
