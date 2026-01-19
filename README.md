@@ -7,7 +7,7 @@ This project was created as part of a frontend assignment with a strong focus on
 ---
 
 ## Live Demo
-    *(Add your deployed link here — Vercel / Netlify)*
+    https://weather-pro-bice.vercel.app/
 
 ---
 
@@ -126,7 +126,7 @@ VITE_WEATHER_API_KEY=your_api_key_here
 
 ---
 
-## 👨‍💻 Author
+## Author
 
 Piyush Kumar  
 Frontend Developer | UI/UX Enthusiast  
