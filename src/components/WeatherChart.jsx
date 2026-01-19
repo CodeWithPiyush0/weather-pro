@@ -14,7 +14,9 @@ const WeatherChart = ({ forecastData, unit }) => {
         humidity: item.main.humidity,
     }))
 
-    
+    const hasPrecipitation = chartData?.some(
+        item => item.precipitation > 0
+    );
 
     const renderChart = () => {
         switch (activeTab) {
@@ -33,19 +35,19 @@ const WeatherChart = ({ forecastData, unit }) => {
                                 </linearGradient>
                             </defs>
                             <CartesianGrid strokeDasharray="3 3" vertical={false} stroke='#f0f0f0' />
-                            <XAxis 
-                                dataKey="time" 
-                                tick={{ fontSize: window.innerWidth < 600 ? 8 : 10, fill: '#94a3b8' }} 
-                                axisLine={false} 
-                                interval="preserveStartEnd" 
-                                tickLine={false} 
-                                tickMargin={10} 
+                            <XAxis
+                                dataKey="time"
+                                tick={{ fontSize: window.innerWidth < 600 ? 8 : 10, fill: '#94a3b8' }}
+                                axisLine={false}
+                                interval="preserveStartEnd"
+                                tickLine={false}
+                                tickMargin={10}
                             />
-                            <YAxis 
-                                unit='°' 
-                                tick={{ fontSize: window.innerWidth < 640 ? 8 : 10 }} 
-                                axisLine={false} 
-                                tickLine={false} 
+                            <YAxis
+                                unit='°'
+                                tick={{ fontSize: window.innerWidth < 640 ? 8 : 10 }}
+                                axisLine={false}
+                                tickLine={false}
                                 width={30}
                             />
                             <Tooltip
@@ -76,23 +78,30 @@ const WeatherChart = ({ forecastData, unit }) => {
                 );
 
             case 'precipitation':
+                if (!hasPrecipitation) {
+                    return (
+                        <div className="flex items-center justify-center h-full text-gray-500 text-sm">
+                            No precipitation expected in the next 24 hours
+                        </div>
+                    );
+                }
                 return (
                     <ResponsiveContainer width="100%" height="100%">
                         <BarChart data={chartData} margin={{ top: 5, right: 10, left: 0, bottom: 30 }}>
                             <CartesianGrid strokeDasharray="3 3" vertical={false} stroke='#f0f0f0' />
-                            <XAxis 
-                                dataKey="time" 
-                                tick={{ fontSize: window.innerWidth < 600 ? 8 : 10, fill: '#94a3b8' }} 
-                                axisLine={false} 
-                                interval="preserverStartEnd" 
-                                tickLine={false} 
-                                tickMargin={10} 
+                            <XAxis
+                                dataKey="time"
+                                tick={{ fontSize: window.innerWidth < 600 ? 8 : 10, fill: '#94a3b8' }}
+                                axisLine={false}
+                                interval="preserveStartEnd"
+                                tickLine={false}
+                                tickMargin={10}
                             />
-                            <YAxis 
-                                unit='mm' 
-                                tick={{ fontSize: window.innerWidth < 640 ? 8 : 10 }} 
-                                axisLine={false} 
-                                tickLine={false} 
+                            <YAxis
+                                unit='mm'
+                                tick={{ fontSize: window.innerWidth < 640 ? 8 : 10 }}
+                                axisLine={false}
+                                tickLine={false}
                                 width={30}
                             />
                             <Tooltip
@@ -114,19 +123,19 @@ const WeatherChart = ({ forecastData, unit }) => {
                     <ResponsiveContainer width="100%" height="100%">
                         <LineChart data={chartData} margin={{ top: 5, right: 10, left: 0, bottom: 30 }}>
                             <CartesianGrid strokeDasharray="3 3" vertical={false} stroke='#f0f0f0' />
-                            <XAxis 
-                                dataKey="time" 
-                                tick={{ fontSize: window.innerWidth < 640 ? 8 : 10, fill: '#94a3b8' }} 
-                                axisLine={false} 
-                                interval="preserveStartEnd" 
-                                tickLine={false} 
+                            <XAxis
+                                dataKey="time"
+                                tick={{ fontSize: window.innerWidth < 640 ? 8 : 10, fill: '#94a3b8' }}
+                                axisLine={false}
+                                interval="preserveStartEnd"
+                                tickLine={false}
                                 tickMargin={10}
                             />
-                            <YAxis 
-                                unit={unit === 'metric' ? ' m/s' : ' mph'} 
-                                tick={{ fontSize: window.innerWidth < 640 ? 8 : 10 }} 
-                                axisLine={false} 
-                                tickLine={false} 
+                            <YAxis
+                                unit={unit === 'metric' ? ' m/s' : ' mph'}
+                                tick={{ fontSize: window.innerWidth < 640 ? 8 : 10 }}
+                                axisLine={false}
+                                tickLine={false}
                                 width={40}
                             />
                             <Tooltip
@@ -156,8 +165,7 @@ const WeatherChart = ({ forecastData, unit }) => {
             <div className='flex gap-1 md:gap-2 mb-4 px-2 overflow-x-auto'>
                 <button
                     onClick={() => setActiveTab('temperature')}
-                    className={`px-2 md:px-4 py-2 rounded-lg text-xs md:text-sm font-medium transition whitespace-nowrap shrink-0 ${
-                        activeTab === 'temperature'
+                    className={`px-2 md:px-4 py-2 rounded-lg text-xs md:text-sm font-medium transition whitespace-nowrap shrink-0 ${activeTab === 'temperature'
                             ? 'bg-blue-100 text-gray-700'
                             : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                         }`}
@@ -166,8 +174,7 @@ const WeatherChart = ({ forecastData, unit }) => {
                 </button>
                 <button
                     onClick={() => setActiveTab('precipitation')}
-                    className={`px-2 md:px-4 py-2 rounded-lg text-xs md:text-sm font-medium transition whitespace-nowrap shrink-0 ${
-                        activeTab === 'precipitation'
+                    className={`px-2 md:px-4 py-2 rounded-lg text-xs md:text-sm font-medium transition whitespace-nowrap shrink-0 ${activeTab === 'precipitation'
                             ? 'bg-blue-100 text-gray-700'
                             : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                         }`}
@@ -176,8 +183,7 @@ const WeatherChart = ({ forecastData, unit }) => {
                 </button>
                 <button
                     onClick={() => setActiveTab('wind')}
-                    className={`px-2 md:px-4 py-2 rounded-lg text-xs md:text-sm font-medium transition whitespace-nowrap shrink-0 ${
-                        activeTab === 'wind'
+                    className={`px-2 md:px-4 py-2 rounded-lg text-xs md:text-sm font-medium transition whitespace-nowrap shrink-0 ${activeTab === 'wind'
                             ? 'bg-blue-100 text-gray-700'
                             : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                         }`}
