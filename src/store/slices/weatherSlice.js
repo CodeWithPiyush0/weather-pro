@@ -39,11 +39,11 @@ const loadFavorites = () => {
 };
 
 const saveFavorites = (cities) => {
-    const favoriteIds = cities
+    const favoriteNames = cities
         .filter(city => city.favorite)
-        .map(city => city.id);
+        .map(city => city.name);
 
-    localStorage.setItem('favoriteCities', JSON.stringify(favoriteIds))
+    localStorage.setItem('favoriteCities', JSON.stringify(favoriteNames))
 };
 
 const weatherSlice = createSlice({
@@ -53,7 +53,7 @@ const weatherSlice = createSlice({
         loading: false,
         error: null,
         unit: 'metric',
-        favoriteCitiIds: loadFavorites()
+        favoriteCityNames: loadFavorites()
     },
     reducers: {
         removeCity: (state, action) => {
@@ -86,7 +86,7 @@ const weatherSlice = createSlice({
                 const exists = state.cities.find(c => c.id === action.payload.id);
 
                 const favoriteStatus = 
-                    state.favoriteCitiIds.includes(action.payload.id) || 
+                    state.favoriteCityNames.includes(action.payload.name) || 
                     exists?.favorite ||
                     false;
 

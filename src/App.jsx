@@ -7,15 +7,21 @@ import { X, Star, AlertCircle, Loader2 } from "lucide-react";
 import WeatherChart from "./components/WeatherChart";
 
 function App() {
-  const { cities, unit, loading, error } = useSelector((state) => state.weather);
+  const { cities, unit, loading, error, favoriteCityNames } = useSelector((state) => state.weather);
   const [selectedCity, setSelectedCity] = useState(null);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    favoriteCityNames.forEach(cityName => {
+      dispatch(fetchWeather({ city: cityName, unit }));
+    });
+  }, []);
 
   useEffect(() => {
     cities.forEach(city => {
       dispatch(fetchWeather({ city: city.name, unit }))
     });
-  }, [unit, cities, dispatch]);
+  }, [unit]);
 
   const sortedCities = useMemo(() => {
     return [...cities].sort((a, b) => {
